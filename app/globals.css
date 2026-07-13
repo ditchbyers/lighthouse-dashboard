@@ -9,7 +9,15 @@
   --muted: #9fb1cc;
   --accent: #7dd3fc;
   --accent-strong: #38bdf8;
-  --accent-alt: #a78bfa;
+  --accent-alt: #2dd4bf;
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
 }
 
 html {
@@ -23,10 +31,7 @@ body {
   max-width: 100vw;
   overflow-x: hidden;
   color: var(--text);
-  background:
-    radial-gradient(circle at top left, rgba(56, 189, 248, 0.14), transparent 28%),
-    radial-gradient(circle at top right, rgba(167, 139, 250, 0.12), transparent 24%),
-    linear-gradient(180deg, #09111f 0%, #0b1020 100%);
+  background: var(--background);
 }
 
 a {

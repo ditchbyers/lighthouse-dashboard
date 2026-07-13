@@ -1,5 +1,9 @@
 import './globals.css';
 import SidebarNav from './components/SidebarNav';
+import { Geist, Geist_Mono } from 'next/font/google';
+
+const geistSans = Geist({ subsets: ['latin'], variable: '--font-geist-sans' });
+const geistMono = Geist_Mono({ subsets: ['latin'], variable: '--font-geist-mono' });
 
 export const metadata = {
   title: 'Lighthouse Evaluation Dashboard',
@@ -8,8 +12,8 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" data-scroll-behavior="smooth">
-      <body>
+    <html lang="en" data-scroll-behavior="smooth" className="bg-background">
+      <body className={`${geistSans.variable} ${geistMono.variable} font-sans`}>
         <div className="min-h-screen overflow-x-hidden flex flex-col lg:flex-row">
           <aside className="lg:sticky lg:top-0 lg:h-screen lg:w-72 lg:shrink-0 border-b lg:border-b-0 lg:border-r border-white/10 bg-slate-950/70 backdrop-blur-xl p-5 overflow-x-hidden">
             <div className="rounded-2xl border border-white/10 bg-white/5 p-4 mb-6">

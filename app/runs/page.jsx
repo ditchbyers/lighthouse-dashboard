@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { loadLighthouseDataset } from '../../lib/lighthouse-data';
 import { formatDateTime, formatRunFolderDateTime } from '../../lib/date-time';
+import { CategoryProfile, FrameworkComparison, SourceNotice, TrendChart } from '../components/LighthouseCharts';
 
 export const dynamic = 'force-dynamic';
 
@@ -16,6 +17,16 @@ export default async function RunsPage() {
           Browse all available benchmark runs. Open one run for deep-dive analysis or open the dashboard with any run preselected.
         </p>
       </section>
+
+      <SourceNotice source={dataset.source} sourceLabel={dataset.sourceLabel} />
+
+      <div className="grid gap-6 xl:grid-cols-2">
+        <TrendChart rows={dataset.rows} title="Performance across benchmark runs" />
+        <FrameworkComparison rows={dataset.rows} title="Current framework standings" />
+        <div className="xl:col-span-2">
+          <CategoryProfile rows={dataset.rows} title="Category health across all runs" />
+        </div>
+      </div>
 
       <section className="rounded-3xl border border-white/10 bg-white/5 p-5 overflow-x-auto">
         <table className="min-w-full border-collapse text-sm">

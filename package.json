@@ -13,7 +13,8 @@
     "plotly.js-dist-min": "latest",
     "react": "latest",
     "react-dom": "latest",
-    "react-plotly.js": "latest"
+    "react-plotly.js": "latest",
+    "recharts": "^3.9.2"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "latest",
