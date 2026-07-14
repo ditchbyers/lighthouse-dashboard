@@ -4,11 +4,17 @@ import Link from 'next/link';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import Plotly from 'plotly.js-dist-min';
 import { buildSearchParamsFromSelection } from '../../lib/filter-state';
 import { formatDateTime, formatRunFolderDateTime } from '../../lib/date-time';
 
 const Plot = dynamic(() => import('react-plotly.js'), { ssr: false });
+
+async function downloadPlotImage(graph, filename) {
+  if (!graph) return;
+  const module = await import('plotly.js-dist-min');
+  const plotly = module.default ?? module;
+  await plotly.downloadImage(graph, { format: 'png', filename });
+}
 
 const FILTER_CARD = 'rounded-2xl border border-white/10 bg-white/5 p-4 shadow-[0_20px_80px_rgba(0,0,0,0.2)]';
 
@@ -1043,7 +1049,7 @@ export default function LighthouseExplorer({ dataset, filters, initialSelection,
               </select>
               <button
                 type="button"
-                onClick={() => trendGraphRef.current && Plotly.downloadImage(trendGraphRef.current, { format: 'png', filename: `iteration-${trendChartType}` })}
+                onClick={() => trendGraphRef.current && downloadPlotImage(trendGraphRef.current, `iteration-${trendChartType}`)}
                 className="rounded-lg border border-white/10 px-3 py-2 text-xs text-slate-100 hover:border-cyan-300/40 hover:bg-cyan-400/10"
               >
                 Export graph PNG
@@ -1121,7 +1127,7 @@ export default function LighthouseExplorer({ dataset, filters, initialSelection,
               </select>
               <button
                 type="button"
-                onClick={() => diagnosticHeatGraphRef.current && Plotly.downloadImage(diagnosticHeatGraphRef.current, { format: 'png', filename: `audit-heatmap-${diagnosticHeatMetric}` })}
+                onClick={() => diagnosticHeatGraphRef.current && downloadPlotImage(diagnosticHeatGraphRef.current, `audit-heatmap-${diagnosticHeatMetric}`)}
                 className="rounded-lg border border-white/10 px-3 py-2 text-xs text-slate-100 hover:border-cyan-300/40 hover:bg-cyan-400/10"
               >
                 Export graph PNG

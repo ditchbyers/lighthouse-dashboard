@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { loadRunWorkspace } from '../../../lib/lighthouse-audits';
 import { formatDateTime } from '../../../lib/date-time';
+import { CategoryProfile, FrameworkComparison, TrendChart } from '../../components/LighthouseCharts';
 
 export const dynamic = 'force-dynamic';
 
@@ -29,6 +30,7 @@ export default async function SingleRunPage({ params }) {
   const uniqueFrameworks = new Set(workspace.rows.map((row) => `${row.framework}-${row.version}`));
   const uniqueRoutes = new Set(workspace.rows.map((row) => row.route));
   const uniquePresets = new Set(workspace.rows.map((row) => row.preset));
+  const iterations = [...new Set(workspace.rows.map((row) => row.iteration))].sort((left, right) => left - right);
 
   return (
     <div className="space-y-6 min-w-0">
@@ -69,6 +71,30 @@ export default async function SingleRunPage({ params }) {
           <p className="text-xs uppercase tracking-[0.2em] text-slate-400">Run Warnings</p>
           <p className="mt-2 text-3xl font-semibold text-white">{workspace.runContext.runWarnings.length}</p>
         </article>
+      </section>
+
+      <div className="grid gap-6 xl:grid-cols-2">
+        <TrendChart rows={workspace.rows} dimension="iteration" title="Iteration stability by framework" />
+        <FrameworkComparison rows={workspace.rows} title="Framework performance in this run" />
+        <div className="xl:col-span-2">
+          <CategoryProfile rows={workspace.rows} title="Category profile for this run" />
+        </div>
+      </div>
+
+      <section className="rounded-3xl border border-white/10 bg-white/5 p-5">
+        <p className="text-xs uppercase tracking-[0.22em] text-cyan-200/70">Iteration drilldown</p>
+        <h2 className="mt-1 text-lg font-semibold text-white">Inspect a single measurement pass</h2>
+        <div className="mt-4 flex flex-wrap gap-2">
+          {iterations.map((iteration) => (
+            <Link
+              key={iteration}
+              href={`/run/${encodeURIComponent(workspace.runFolder)}/iteration/${iteration}`}
+              className="rounded-xl border border-white/10 bg-slate-950/40 px-4 py-2 text-sm text-slate-100 hover:border-cyan-300/40 hover:bg-cyan-400/10"
+            >
+              Iteration {iteration}
+            </Link>
+          ))}
+        </div>
       </section>
 
       <section className="rounded-3xl border border-white/10 bg-white/5 p-5 overflow-x-auto">
